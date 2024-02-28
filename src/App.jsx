@@ -8,7 +8,6 @@ const App = () => {
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
   const [validSuccess, setValidSuccess] = useState(false);
-  const [spaceError, setSpaceError] = useState(false);
 
   const [data, setData] = useState({
     firstName: "",
@@ -24,26 +23,42 @@ const App = () => {
     setData((prevData) => ({ ...prevData, [name]: value }));
 
   };
+  console.log(data)
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const { firstName, lastName, email, phone } = data;
+    // Reset error states
+    setFirstNameError(false);
+    setLastNameError(false);
+    setEmailError(false);
+    setPhoneError(false);
 
     // Check for empty values
-    if (firstName.trim() === "") {
+    if (!firstName.trim()) {
       setFirstNameError(true);
       return;
     }
 
-    if (lastName.trim() === "") {
+    if (!lastName.trim()) {
       setLastNameError(true);
       return;
     }
 
-    if (email.trim() === "" || phone.trim() === "") {
-      setSpaceError(true);
+    if (!email.trim()) {
+      alert("Please enter your email !")
+    }
+
+    // Check for valid email format
+    if (!email.includes("@kalvium.community")) {
+      setEmailError(true);
       return;
+    }
+
+
+    if (!phone.trim()) {
+      alert("Please enter phone number !")
     }
 
     // Check for phone number validity
@@ -52,15 +67,12 @@ const App = () => {
       return;
     }
 
-    // Check for valid email format
-    if (!email.includes('@kalvium.community')) {
-      setEmailError(true);
-      return;
-    }
 
     // If all validations pass, set success state to true
     setValidSuccess(true);
   };
+
+  console.log(firstNameError, lastNameError, emailError)
 
   return (
     <div>
@@ -117,7 +129,7 @@ const App = () => {
                 placeholder="Email"
               />
 
-              {emailError && <p className="error">Check your email</p>}
+              {emailError && <p className="error">Invalid Email</p>}
 
               <br />
               <br />
@@ -131,12 +143,11 @@ const App = () => {
                 name="phone"
               />
 
-              {phoneError && <p className="error">Check your phone number</p>}
+              {phoneError && <p className="error">Invalid phone number</p>}
 
               <br />
               <br />
 
-              {spaceError && <p className="error">Please enter all inputs</p>}
 
               <div>
 
